@@ -38,6 +38,10 @@
 <script setup>
 import { ref } from 'vue';
 
+definePageMeta({
+  middleware: ["guest"],
+});
+
 const auth = useAuthStore();
 const email = ref('');
 const password = ref('');

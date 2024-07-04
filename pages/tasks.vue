@@ -76,6 +76,10 @@ import { AgGridVue } from "ag-grid-vue3";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
+definePageMeta({
+    middleware: ["auth"],
+});
+
 const { $columnDefs } = useNuxtApp();
 const task = useTaskStore();
 const pageSize = ref(4);

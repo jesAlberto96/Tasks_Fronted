@@ -4,6 +4,7 @@ export const useAuthStore = defineStore("auth", {
   ),
   getters: {
     doubleCount: (state) => state.count * 2,
+    getUser: (state) => state.user,
   },
   actions: {
     async login({ email, password }) {
@@ -24,18 +25,22 @@ export const useAuthStore = defineStore("auth", {
     },
     async logout() {
       const tokenStore = useTokenStore();
-      const response = await $fetch("http://127.0.0.1:8000/api/logout", {
-        method: "POST",
-        headers: {
-          Accept: 'application/json',
-          "Cache-Control": "no-cache",
-          Authorization: `Bearer ${tokenStore.getToken}`,
-        }
-      });
+      try {
+        await $fetch("http://127.0.0.1:8000/api/logout", {
+          method: "POST",
+          headers: {
+            Accept: 'application/json',
+            "Cache-Control": "no-cache",
+            Authorization: `Bearer ${tokenStore.getToken}`,
+          }
+        });
 
-      tokenStore.removeToken();
-
-      return navigateTo('/auth/login');
+        tokenStore.removeToken();
+        return navigateTo('/auth/login');
+      } catch (error) {
+        tokenStore.removeToken();
+        return navigateTo('/auth/login');
+      }
     },
 
     commonSetter(data){
